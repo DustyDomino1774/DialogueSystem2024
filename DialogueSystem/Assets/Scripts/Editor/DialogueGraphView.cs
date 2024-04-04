@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -101,9 +98,9 @@ public class DialogueGraphView : GraphView
         {
             text = "X"
         };
-        
         //add the remove button to the generated port
         generatedPort.contentContainer.Add(button);
+        
         //add the generated port to the node
         node.outputContainer.Add(generatedPort);
         //refresh ports and nodes
@@ -111,10 +108,27 @@ public class DialogueGraphView : GraphView
         node.RefreshPorts();
     }
 
-    private void RemoveChoicePort(DialogueNode node, Port port)
+    private void RemoveChoicePort(DialogueNode node, Port generatedPort)
     {
+         //Find the edges that are connected to this port.
+        var targetEdges = edges.ToList();
+        List<Edge> foundEdges = new List<Edge>();
+        foreach (Edge edge in targetEdges) 
+        {
+            if (edge.output.portName == generatedPort.portName && 
+                edge.output.node == generatedPort.node)
+            {
+                foundEdges.Add(edge);
+            }
+        }
+        foreach (Edge edge in foundEdges) 
+        {
+            edge.input.Disconnect(edge);
+            RemoveElement(edge);
+        }
+
         //Remove the corresponding port and refresh the node
-        node.outputContainer.Remove(port);
+        node.outputContainer.Remove(generatedPort);
         node.RefreshPorts();
         node.RefreshExpandedState();
     }

@@ -22,7 +22,7 @@ public class DialogueManager : Singleton<DialogueManager>
     {
         foreach(DialogueLine line in database.database )
         {
-            m_DialogueTable.Add(line.name, line);
+            m_DialogueTable.Add(line.GUID, line);
         }
     }
 

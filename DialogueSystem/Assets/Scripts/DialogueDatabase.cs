@@ -5,5 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "dialogueDatabase", menuName = "Dialogue System/Create Database")]
 public class DialogueDatabase : ScriptableObject
 {
-    public DialogueLine[] database;
+    public List<DialogueLine> database = new List<DialogueLine>();
+    public List<NodeLinkData> NodeLinks = new List<NodeLinkData>();
 }

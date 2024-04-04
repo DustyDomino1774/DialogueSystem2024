@@ -11,7 +11,6 @@ using UnityEngine.UIElements;
 
 public class DialogueGraph : EditorWindow
 {
-
     private DialogueGraphView m_GraphView;
     private string m_fileName;
 
@@ -30,7 +29,22 @@ public class DialogueGraph : EditorWindow
 
     private void SaveLoadData(bool isSaving)
     {
-
+        if (!string.IsNullOrEmpty(m_fileName)) 
+        {
+            var saveUtility = GraphSaveUtility.GetInstance(m_GraphView);
+            if (isSaving)
+            {
+                saveUtility.SaveGraph(m_fileName);
+            }
+            else
+            {
+                saveUtility.LoadGraph(m_fileName);
+            }
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("Invalid Filename", "Please Enter a valid Name", "OK");
+        }
     }
 
     
